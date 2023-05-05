@@ -15,7 +15,7 @@ object WeatherData {
   implicit val formats: DefaultFormats.type = DefaultFormats
 
   val baseUrl = "https://api.openweathermap.org/data/2.5/weather"
-  val apiKey = "ab04e018aaeb851b315e111377c58817"
+  val apiKey = "api_key"
 
   def getWeatherData(cityName: String): Option[WeatherData] = {
     val response = Http(baseUrl).params(Seq("q" -> cityName, "appid" -> apiKey)).asString
