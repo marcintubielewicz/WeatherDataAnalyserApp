@@ -1,9 +1,9 @@
-import model.OpenWeatherAPI
+import model.WeatherData
 
 object Application {
   def main(args: Array[String]): Unit = {
 
-    val weatherDataOpt = OpenWeatherAPI.getWeatherData("Zielonka, PL")
+    val weatherDataOpt = WeatherData.getWeatherData("Zielonka, PL")
     weatherDataOpt match {
       case Some(weatherData) => {
         println(s"Actual temperature in ${weatherData.city}: ${weatherData.temperature}) C \nhumidity is: ${weatherData.humidity} %")
