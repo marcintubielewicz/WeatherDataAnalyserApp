@@ -81,9 +81,6 @@ Temporary Items
 
 *.idea*
 
-# Sensitive or high-churn files
-/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/application.conf
-
 
 # CMake
 cmake-build-*/
