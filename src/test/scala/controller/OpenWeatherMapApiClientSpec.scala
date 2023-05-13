@@ -7,6 +7,7 @@ package controller
 import org.scalatest.flatspec.AsyncFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.nio.file.{Files, Paths}
 import scala.language.postfixOps
 
 class OpenWeatherMapApiClientSpec extends AsyncFlatSpec with Matchers {
@@ -27,4 +28,14 @@ class OpenWeatherMapApiClientSpec extends AsyncFlatSpec with Matchers {
     succeed
   }
 
+  it should "fetch weather data for a city and save it to a file" in {
+    val cityName = "London"
+    val responseFuture = OpenWeatherMapApiClient.fetchData(cityName)
+
+    responseFuture.map { response =>
+      val fileName = s"$cityName.json"
+      Files.write(Paths.get(fileName), response.getBytes)
+      succeed
+    }
+  }
 }
