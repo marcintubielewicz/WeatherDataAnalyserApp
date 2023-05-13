@@ -4,18 +4,23 @@
  */
 package model
 
-import java.sql.{Connection, DriverManager}
+import com.typesafe.config.{Config, ConfigFactory}
+
+import java.sql.{Connection, DriverManager, Statement}
 import scala.concurrent.{ExecutionContext, Future}
 
-class WeatherDatabase (databaseUrl: String, databaseName: String, username: String, password: String)
+class WeatherDatabase (databaseUrl: String,
+                       databaseName: String,
+                       username: String,
+                       password: String)
                      (implicit ec: ExecutionContext) {
 
-//  val config = ConfigFactory.load("application.conf")
-//
-//  val databaseUrl = config.getString("db.url")
-//  val databaseName = config.getString("db.name")
-//  val username = config.getString("db.user")
-//  val password = config.getString("db.password")
+  val config: Config = ConfigFactory.load("application.conf")
+
+//  val databaseUrl: String = config.getString("db.url")
+//  val databaseName: String = config.getString("db.name")
+//  val username: String = config.getString("db.user")
+//  val password: String = config.getString("db.password")
 
   // Load PostgreSQL driver
   Class.forName("org.postgresql.Driver")
@@ -24,7 +29,7 @@ class WeatherDatabase (databaseUrl: String, databaseName: String, username: Stri
   val connection: Connection = DriverManager.getConnection(databaseUrl, username, password)
 
   // Create the database if it does not exist
-  val statement = connection.createStatement()
+  val statement: Statement = connection.createStatement()
   statement.executeUpdate(s"CREATE DATABASE IF NOT EXISTS $databaseName;")
   statement.close()
 
