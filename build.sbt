@@ -23,12 +23,12 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-persistence-typed" % "2.8.0",
   "com.typesafe.akka" %% "akka-cluster-typed" % "2.8.0",
   "org.scalatest" %% "scalatest" % "3.2.15" % Test,
-  "com.typesafe.akka" %% "akka-http-testkit" % "10.5.0" % Test,
+  "com.typesafe.akka" %% "akka-http-testkit" % "10.5.0" est,
   "org.slf4j" % "slf4j-api" % "2.0.5",
   "org.slf4j" % "slf4j-simple" % "2.0.5",
-  "org.postgresql" % "postgresql" % "42.2.23",
-  "com.typesafe.slick" %% "slick" % "3.3.3",
-  "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",
+  "org.postgresql" % "postgresql" % "42.5.4",
+  "com.typesafe.slick" %% "slick" % "3.4.1",
+  "com.typesafe.slick" %% "slick-hikaricp" % "3.4.1",
   "com.github.tminglei" %% "slick-pg" % "0.21.1",
   "com.github.tminglei" %% "slick-pg_play-json" % "0.21.1"
 )
