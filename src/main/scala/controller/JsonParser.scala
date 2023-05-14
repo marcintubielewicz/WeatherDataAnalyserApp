@@ -1,6 +1,7 @@
 package controller
 
-import io.circe._, io.circe.parser._
+import io.circe._
+import io.circe.parser._
 
 class JsonParser {
   val jsonString =
