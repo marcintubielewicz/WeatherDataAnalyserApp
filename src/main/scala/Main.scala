@@ -8,5 +8,6 @@ object Main{
     val jsonDataLondon = OpenWeatherMapApiClient.fetchAndSaveData("London")
     val jsonDataBydgoszcz = OpenWeatherMapApiClient.fetchAndSaveData("Bydgoszcz")
 
+
   }
 }

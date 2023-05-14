@@ -13,8 +13,12 @@ object DatabaseConnection extends App {
 
     val rs = stm.executeQuery("SELECT * from weather_data")
 
-    while(rs.next) {
-      println(rs.getString("quote"))
+    while (rs.next) {
+      println("id: " + rs.getString("id"))
+      println("coord_lon: " + rs.getDouble("coord_lon"))
+      println("coord_lat: " + rs.getDouble("coord_lat"))
+      println("city_name: " + rs.getString("city_name"))
+      println()
     }
   } finally {
     conn.close()
