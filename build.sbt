@@ -31,7 +31,10 @@ libraryDependencies ++= Seq(
   "com.github.tminglei" %% "slick-pg" % "0.21.1",
   "com.github.tminglei" %% "slick-pg_play-json" % "0.21.1",
   "org.slf4j" % "slf4j-nop" % "1.6.4",
-  "org.postgresql" % "postgresql" % "9.4-1206-jdbc42" //org.postgresql.ds.PGSimpleDataSource dependency
+  "org.postgresql" % "postgresql" % "9.4-1206-jdbc42", //org.postgresql.ds.PGSimpleDataSource dependency
+  "io.circe" %% "circe-core" % "0.14.1",
+  "io.circe" %% "circe-generic" % "0.14.1",
+  "io.circe" %% "circe-parser" % "0.14.1"
 )
 
 
