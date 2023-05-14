@@ -57,11 +57,12 @@ object OpenWeatherMapApiClient {
     }
   }
 
+  val currentDateTime = java.time.LocalDateTime.now()
   def fetchAndSaveData(cityName: String): Unit = {
     val responseFuture: Future[String] = fetchData(cityName)
     responseFuture.onComplete {
       case Success(json) =>
-        val filePath = "/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/src/main/resources/data.json"
+        val filePath = s"/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/src/main/resources/$currentDateTime-$cityName.json"
         Files.write(Paths.get(filePath), json.getBytes)
         println(s"Response received for $cityName. Data saved as JSON file: $filePath")
       case Failure(exception) =>

@@ -25,6 +25,19 @@ class DatabaseConnectionSpec extends AnyFlatSpec with Matchers {
       // Execute a query to select all rows from the weather_data table
       val resultSet = statement.executeQuery("SELECT * FROM weather_data")
 
+//      // Iterate over the result set and print each row
+//      while (resultSet.next()) {
+//        val coordLon = resultSet.getDouble("coord_lon")
+//        val coordLat = resultSet.getDouble("coord_lat")
+//        val weatherId = resultSet.getInt("weather_id")
+//        val weatherMain = resultSet.getString("weather_main")
+//        val weatherDescription = resultSet.getString("weather_description")
+//        val weatherIcon = resultSet.getString("weather_icon")
+//
+//        // Print the row data
+//        println(s"coord_lon: $coordLon, coord_lat: $coordLat, weather_id: $weatherId, weather_main: $weatherMain, weather_description: $weatherDescription, weather_icon: $weatherIcon")
+//      }
+
       // Verify that at least one row is returned
       resultSet.next() shouldEqual true
 

@@ -26,4 +26,5 @@ class ConnectionSpec extends AnyFlatSpec with Matchers with BeforeAndAfterAll {
 //    actualConfig shouldEqual expectedConfig
 //  }
 
+//  Connection.db.close()
 }
