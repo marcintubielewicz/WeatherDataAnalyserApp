@@ -3,6 +3,7 @@ package controller
 import io.circe._
 import io.circe.parser._
 
+//used directly in code of class JsonToPostgres.scala
 class JsonParser {
 //  val jsonString =
 //    """
