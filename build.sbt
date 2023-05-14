@@ -17,15 +17,24 @@ libraryDependencies ++= Seq(
   "org.scalaj" %% "scalaj-http" % "2.4.2",
   "org.json4s" %% "json4s-jackson" % "4.0.6",
   "com.typesafe.akka" %% "akka-http-caching" % "10.5.0",
-  "com.typesafe.akka" %% "akka-http-testkit" % "10.5.0",
-  "com.typesafe.akka" %% "akka-stream-testkit" % "2.8.0",
+  "com.typesafe.akka" %% "akka-http-testkit" % "10.5.0" % Test,
+  "com.typesafe.akka" %% "akka-stream-testkit" % "2.8.0" % Test,
   "com.typesafe.akka" %% "akka-actor-typed" % "2.8.0",
   "com.typesafe.akka" %% "akka-persistence-typed" % "2.8.0",
   "com.typesafe.akka" %% "akka-cluster-typed" % "2.8.0",
   "org.scalatest" %% "scalatest" % "3.2.15" % Test,
-  "com.typesafe.akka" %% "akka-http-testkit" % "10.5.0" % Test,
   "org.slf4j" % "slf4j-api" % "2.0.5",
-  "org.slf4j" % "slf4j-simple" % "2.0.5"
+  "org.slf4j" % "slf4j-simple" % "2.0.5",
+  "org.postgresql" % "postgresql" % "42.5.4",
+  "com.typesafe.slick" %% "slick" % "3.4.1",
+  "com.typesafe.slick" %% "slick-hikaricp" % "3.4.1",
+  "com.github.tminglei" %% "slick-pg" % "0.21.1",
+  "com.github.tminglei" %% "slick-pg_play-json" % "0.21.1",
+  "org.slf4j" % "slf4j-nop" % "1.6.4",
+  "org.postgresql" % "postgresql" % "9.4-1206-jdbc42", //org.postgresql.ds.PGSimpleDataSource dependency
+  "io.circe" %% "circe-core" % "0.14.1",
+  "io.circe" %% "circe-generic" % "0.14.1",
+  "io.circe" %% "circe-parser" % "0.14.1"
 )
 
 

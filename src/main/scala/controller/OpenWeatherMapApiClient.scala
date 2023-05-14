@@ -10,8 +10,10 @@ import akka.http.scaladsl.client.RequestBuilding.Get
 import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 
-import scala.concurrent.duration.DurationInt
+import java.nio.file.{Files, Paths}
 import scala.concurrent.{ExecutionContextExecutor, Future}
+import scala.concurrent.duration.DurationInt
+import scala.util.{Failure, Success}
 
 object OpenWeatherMapApiClient {
   implicit val system: ActorSystem = ActorSystem()
@@ -52,6 +54,19 @@ object OpenWeatherMapApiClient {
     val responseFuture = fetchData(cityName)
     responseFuture.map { json =>
       println(s"Response received for $cityName: $json")
+    }
+  }
+
+  val currentDateTime = java.time.LocalDateTime.now()
+  def fetchAndSaveData(cityName: String): Unit = {
+    val responseFuture: Future[String] = fetchData(cityName)
+    responseFuture.onComplete {
+      case Success(json) =>
+        val filePath = s"/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/src/main/resources/$currentDateTime-$cityName.json"
+        Files.write(Paths.get(filePath), json.getBytes)
+        println(s"Response received for $cityName. Data saved as JSON file: $filePath")
+      case Failure(exception) =>
+        println(s"An error occurred while fetching data for $cityName: ${exception.getMessage}")
     }
   }
 }
