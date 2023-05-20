@@ -14,13 +14,8 @@ class WeatherDatabase (databaseUrl: String,
                        username: String,
                        password: String)
                      (implicit ec: ExecutionContext) {
-
+  // laad configuration from application.conf file
   val config: Config = ConfigFactory.load("application.conf")
-
-//  val databaseUrl: String = config.getString("db.url")
-//  val databaseName: String = config.getString("db.name")
-//  val username: String = config.getString("db.user")
-//  val password: String = config.getString("db.password")
 
   // Load PostgreSQL driver
   Class.forName("org.postgresql.Driver")
@@ -38,16 +33,49 @@ class WeatherDatabase (databaseUrl: String,
 
   // Create the table if it does not exist
   statement.executeUpdate(
-    """CREATE TABLE IF NOT EXISTS weather (
-      |  id SERIAL PRIMARY KEY,
-      |  city VARCHAR(50) NOT NULL,
-      |  json TEXT NOT NULL,
-      |  created_at TIMESTAMP NOT NULL DEFAULT NOW()
-      |);""".stripMargin)
+    """CREATE TABLE IF NOT EXISTS weather_data (
+      |    id SERIAL PRIMARY KEY,
+      |    coord_lon FLOAT,
+      |    coord_lat FLOAT,
+      |    weather_id INT,
+      |    weather_main VARCHAR(50),
+      |    weather_description VARCHAR(255),
+      |    weather_icon VARCHAR(10),
+      |    base VARCHAR(50),
+      |    main_temp FLOAT,
+      |    main_feels_like FLOAT,
+      |    main_temp_min FLOAT,
+      |    main_temp_max FLOAT,
+      |    main_pressure INT,
+      |    main_humidity INT,
+      |    visibility INT,
+      |    wind_speed FLOAT,
+      |    wind_deg INT,
+      |    clouds_all INT,
+      |    dt BIGINT,
+      |    sys_type INT,
+      |    sys_id INT,
+      |    sys_country VARCHAR(3),
+      |    sys_sunrise BIGINT,
+      |    sys_sunset BIGINT,
+      |    timezone INT,
+      |    city_id INT,
+      |    city_name VARCHAR(100),
+      |    cod INT,
+      |    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+      |    );""".stripMargin)
   statement.close()
 
   def saveWeather(city: String, json: String): Future[Unit] = Future {
-    val preparedStatement = connection.prepareStatement("INSERT INTO weatherappdata (city, json) VALUES (?, ?);")
+    val preparedStatement = connection.prepareStatement("" +
+      """
+      INSERT INTO weather_data (
+        coord_lon, coord_lat, weather_id, weather_main, weather_description, weather_icon, base,
+        main_temp, main_feels_like, main_temp_min, main_temp_max, main_pressure, main_humidity,
+        visibility, wind_speed, wind_deg, clouds_all, dt, sys_type, sys_id, sys_country, sys_sunrise,
+        sys_sunset, timezone, city_id, city_name, cod, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    """)
     preparedStatement.setString(1, city)
     preparedStatement.setString(2, json)
     preparedStatement.executeUpdate()

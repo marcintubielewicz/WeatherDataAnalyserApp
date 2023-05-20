@@ -11,9 +11,10 @@ import akka.stream.ActorMaterializer
 import com.typesafe.config.ConfigFactory
 
 import java.nio.file.{Files, Paths}
-import scala.concurrent.{ExecutionContextExecutor, Future}
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scala.concurrent.duration.DurationInt
-import scala.util.{Failure, Success}
+import scala.concurrent.{ExecutionContextExecutor, Future}
 
 object OpenWeatherMapApiClient {
   implicit val system: ActorSystem = ActorSystem()
@@ -24,6 +25,7 @@ object OpenWeatherMapApiClient {
   private val apiKey = config.getString("api_key.api_key")
 
   val baseUrl = "https://api.openweathermap.org/data/2.5/weather"
+  val units = "units=metric"
 
   /**
    * The `fetchData` method takes a `cityName` parameter and returns a `Future` containing
@@ -36,7 +38,8 @@ object OpenWeatherMapApiClient {
    */
 
   def fetchData(cityName: String): Future[String] = {
-    val url = s"$baseUrl?q=$cityName&appid=$apiKey"
+    val url = s"$baseUrl?q=$cityName&appid=$apiKey&$units"
+    println(url)
     val request = Get(url)
     Http().singleRequest(request)
       .flatMap(response => response.entity.toStrict(5.seconds).map(_.data.utf8String))
@@ -57,15 +60,36 @@ object OpenWeatherMapApiClient {
     }
   }
 
-  val currentDateTime = java.time.LocalDateTime.now()
-  def fetchAndSaveData(cityName: String): Unit = {
+  val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm"))
+//  def fetchAndSaveData(cityName: String): Unit = {
+//    val responseFuture: Future[String] = fetchData(cityName)
+//    responseFuture.onComplete {
+//      case Success(json) =>
+//        val filePath = s"/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/src/main/resources/$currentDateTime-$cityName.json"
+//        Files.write(Paths.get(filePath), json.getBytes)
+//        println(s"Response received for $cityName. Data saved as JSON file: $filePath")
+//      case Failure(exception) =>
+//        println(s"An error occurred while fetching data for $cityName: ${exception.getMessage}")
+//    }
+//  }
+
+  def fetchAndSaveData(cityName: String): Future[Unit] = {
     val responseFuture: Future[String] = fetchData(cityName)
-    responseFuture.onComplete {
-      case Success(json) =>
-        val filePath = s"/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/src/main/resources/$currentDateTime-$cityName.json"
+
+    responseFuture.flatMap { json =>
+      val filePath = s"/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/src/main/resources/$currentDateTime-$cityName.json"
+      val writeFileFuture = Future {
         Files.write(Paths.get(filePath), json.getBytes)
+      }
+
+      writeFileFuture.map { _ =>
         println(s"Response received for $cityName. Data saved as JSON file: $filePath")
-      case Failure(exception) =>
+      }.recover {
+        case exception =>
+          println(s"An error occurred while writing data for $cityName: ${exception.getMessage}")
+      }
+    }.recover {
+      case exception =>
         println(s"An error occurred while fetching data for $cityName: ${exception.getMessage}")
     }
   }
