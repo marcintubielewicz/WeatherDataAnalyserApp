@@ -4,6 +4,7 @@ import com.typesafe.config.{Config, ConfigFactory}
 import io.circe.Json
 import io.circe.generic.codec.DerivedAsObjectCodec.deriveCodec
 import io.circe.parser._
+import model.{Clouds, Coord, Main, Sys, Weather, WeatherData, Wind}
 
 import java.io.File
 import java.sql.{Connection, DriverManager, PreparedStatement, ResultSet}
@@ -12,60 +13,60 @@ class JsonToPgSQL {
 
   def procesJsonFiles(): Unit = {
 
-    // Define the case classes representing the JSON data
-    case class Clouds(
-                       all: Int
-                     )
-
-    case class Coord(
-                      lon: Double,
-                      lat: Double
-                    )
-
-    case class Main(
-                     temp: Double,
-                     feels_like: Double,
-                     temp_min: Double,
-                     temp_max: Double,
-                     pressure: Int,
-                     humidity: Int
-                   )
-
-    case class WeatherData(
-                            coord: Coord,
-                            weather: Seq[Weather],
-                            base: String,
-                            main: Main,
-                            visibility: Int,
-                            wind: Wind,
-                            clouds: Clouds,
-                            dt: Int,
-                            sys: Sys,
-                            timezone: Int,
-                            id: Int,
-                            name: String,
-                            cod: Int
-                          )
-
-    case class Sys(
-                    `type`: Int,
-                    id: Int,
-                    country: String,
-                    sunrise: Long,
-                    sunset: Long
-                  )
-
-    case class Weather(
-                        id: Int,
-                        main: String,
-                        description: String,
-                        icon: String
-                      )
-
-    case class Wind(
-                     speed: Double,
-                     deg: Int
-                   )
+//    // Define the case classes representing the JSON data
+//    case class Clouds(
+//                       all: Int
+//                     )
+//
+//    case class Coord(
+//                      lon: Double,
+//                      lat: Double
+//                    )
+//
+//    case class Main(
+//                     temp: Double,
+//                     feels_like: Double,
+//                     temp_min: Double,
+//                     temp_max: Double,
+//                     pressure: Int,
+//                     humidity: Int
+//                   )
+//
+//    case class WeatherData(
+//                            coord: Coord,
+//                            weather: Seq[Weather],
+//                            base: String,
+//                            main: Main,
+//                            visibility: Int,
+//                            wind: Wind,
+//                            clouds: Clouds,
+//                            dt: Int,
+//                            sys: Sys,
+//                            timezone: Int,
+//                            id: Int,
+//                            name: String,
+//                            cod: Int
+//                          )
+//
+//    case class Sys(
+//                    `type`: Int,
+//                    id: Int,
+//                    country: String,
+//                    sunrise: Long,
+//                    sunset: Long
+//                  )
+//
+//    case class Weather(
+//                        id: Int,
+//                        main: String,
+//                        description: String,
+//                        icon: String
+//                      )
+//
+//    case class Wind(
+//                     speed: Double,
+//                     deg: Int
+//                   )
 
     // Load the configuration file and set the database connection parameters
     val config: Config = ConfigFactory.load("application.conf")

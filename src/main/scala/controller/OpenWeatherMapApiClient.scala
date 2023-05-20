@@ -1,7 +1,3 @@
-/**
- * The `OpenWeatherMapApiClient` object provides a client for fetching weather data
- * from the OpenWeatherMap API for a chosen city.
- */
 package controller
 
 import akka.actor.ActorSystem
@@ -16,6 +12,10 @@ import java.time.format.DateTimeFormatter
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
+/**
+ * The OpenWeatherMapApiClient object provides a client for fetching weather data
+ * from the OpenWeatherMap API for a chosen city.
+ */
 object OpenWeatherMapApiClient {
   implicit val system: ActorSystem = ActorSystem()
   implicit val materializer: ActorMaterializer = ActorMaterializer()
@@ -28,10 +28,10 @@ object OpenWeatherMapApiClient {
   val units = "units=metric"
 
   /**
-   * The `fetchData` method takes a `cityName` parameter and returns a `Future` containing
+   * The fetchData method takes a cityName parameter and returns a Future containing
    * a string representing the weather data for the chosen city.
    * The method uses Akka HTTP to send a GET request to the OpenWeatherMap API
-   * with the specified `cityName` and API key, and returns the response body as a `String`.
+   * with the specified cityName and API key, and returns the response body as a String.
    *
    * @param cityName
    * @return
@@ -46,9 +46,9 @@ object OpenWeatherMapApiClient {
   }
 
   /**
-   * The `fetchAndPrintData` method takes a `cityName` parameter and prints the
-   * fetched weather data to the console using the `println` function.
-   * The method internally calls the `fetchData` method to fetch the weather data.
+   * The fetchAndPrintData method takes a cityName parameter and prints the
+   * fetched weather data to the console using the println function.
+   * The method internally calls the fetchData method to fetch the weather data.
    *
    * @param cityName
    */

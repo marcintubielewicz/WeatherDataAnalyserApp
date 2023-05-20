@@ -14,6 +14,7 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-stream" % "2.8.0",
   "com.typesafe.akka" %% "akka-http" % "10.5.0",
   "com.typesafe.akka" %% "akka-http-spray-json" % "10.5.0",
+  "com.typesafe.akka" %% "akka-actor" % "2.6.6",
   "org.scalaj" %% "scalaj-http" % "2.4.2",
   "org.json4s" %% "json4s-jackson" % "4.0.6",
   "com.typesafe.akka" %% "akka-http-caching" % "10.5.0",

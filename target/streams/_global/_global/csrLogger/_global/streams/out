@@ -1,5 +1,2 @@
-[debug] downloaded https://repo1.maven.org/maven2/org/slf4j/slf4j-nop/1.6.4/slf4j-nop-1.6.4.pom
-[debug] downloaded https://repo1.maven.org/maven2/org/slf4j/slf4j-parent/1.6.4/slf4j-parent-1.6.4.pom
-[debug] downloaded https://repo1.maven.org/maven2/org/slf4j/slf4j-nop/1.6.4/slf4j-nop-1.6.4.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/slf4j/slf4j-nop/1.6.4/slf4j-nop-1.6.4-javadoc.jar
-[debug] downloaded https://repo1.maven.org/maven2/org/slf4j/slf4j-nop/1.6.4/slf4j-nop-1.6.4-sources.jar
+[debug] downloaded https://repo1.maven.org/maven2/com/typesafe/akka/akka-actor_2.13/2.6.6/akka-actor_2.13-2.6.6.pom
+[debug] downloaded https://repo1.maven.org/maven2/org/scala-lang/modules/scala-java8-compat_2.13/0.9.0/scala-java8-compat_2.13-0.9.0.pom
