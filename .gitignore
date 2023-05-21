@@ -44,10 +44,10 @@ replay_pid*
 .DS_Store
 .AppleDouble
 .LSOverride
+.bsp
 
 # Icon must end with two \r
 Icon
-
 
 # Thumbnails
 ._*
@@ -60,6 +60,7 @@ Icon
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+.json
 
 # Directories potentially created on remote AFP share
 .AppleDB
