@@ -1,7 +1,3 @@
-/**
- * The WeatherDatabase class provides a database connection and functionality
- * to store weather data for different cities.
- */
 package model
 
 import com.typesafe.config.{Config, ConfigFactory}
@@ -9,76 +5,118 @@ import com.typesafe.config.{Config, ConfigFactory}
 import java.sql.{Connection, DriverManager, Statement}
 import scala.concurrent.{ExecutionContext, Future}
 
-class WeatherDatabase (databaseUrl: String,
-                       databaseName: String,
-                       username: String,
-                       password: String)
+/**
+ * The WeatherDatabase class provides a database connection and functionality
+ * to store weather data for different cities.
+ *
+ * @param databaseUrl   The URL of the PostgreSQL server.
+ * @param databaseName  The name of the database to be created or used.
+ * @param username      The username to authenticate with the database server.
+ * @param password      The password to authenticate with the database server.
+ * @param ec            The execution context for handling asynchronous operations.
+ */
+class WeatherDatabase()
                      (implicit ec: ExecutionContext) {
-  // laad configuration from application.conf file
-  val config: Config = ConfigFactory.load("application.conf")
 
-  // Load PostgreSQL driver
+  //Loads the PostgreSQL driver.
   Class.forName("org.postgresql.Driver")
 
-  // Create a connection to the PostgreSQL server
+
+  // Load the configuration file
+  val config: Config = ConfigFactory.load("application.conf")
+
+  // Read the database connection properties from the config file
+  val databaseUrl: String = config.getString("postgres.properties.url")
+  val databaseName: String = config.getString("postgres.properties.databaseName")
+  val username: String = config.getString("postgres.properties.user")
+  val password: String = config.getString("postgres.properties.password")
+
+  // Establish a database connection
   val connection: Connection = DriverManager.getConnection(databaseUrl, username, password)
 
-  // Create the database if it does not exist
+  /**
+   * Creates the specified database if it does not already exist.
+   */
   val statement: Statement = connection.createStatement()
   statement.executeUpdate(s"CREATE DATABASE IF NOT EXISTS $databaseName;")
   statement.close()
 
-  // Use the new database
+  /**
+   * Sets the connection's catalog to the newly created database.
+   */
   connection.setCatalog(databaseName)
 
-  // Create the table if it does not exist
-  statement.executeUpdate(
-    """CREATE TABLE IF NOT EXISTS weather_data (
-      |    id SERIAL PRIMARY KEY,
-      |    coord_lon FLOAT,
-      |    coord_lat FLOAT,
-      |    weather_id INT,
-      |    weather_main VARCHAR(50),
-      |    weather_description VARCHAR(255),
-      |    weather_icon VARCHAR(10),
-      |    base VARCHAR(50),
-      |    main_temp FLOAT,
-      |    main_feels_like FLOAT,
-      |    main_temp_min FLOAT,
-      |    main_temp_max FLOAT,
-      |    main_pressure INT,
-      |    main_humidity INT,
-      |    visibility INT,
-      |    wind_speed FLOAT,
-      |    wind_deg INT,
-      |    clouds_all INT,
-      |    dt BIGINT,
-      |    sys_type INT,
-      |    sys_id INT,
-      |    sys_country VARCHAR(3),
-      |    sys_sunrise BIGINT,
-      |    sys_sunset BIGINT,
-      |    timezone INT,
-      |    city_id INT,
-      |    city_name VARCHAR(100),
-      |    cod INT,
-      |    created_at TIMESTAMP NOT NULL DEFAULT NOW()
-      |    );""".stripMargin)
-  statement.close()
+  /**
+   * Creates the "weather_data" table if it does not already exist.
+   * The table schema includes various columns representing different weather data attributes.
+   */
+  def createDatabaseAndTable(): Unit = {
 
-  def saveWeather(city: String, json: String): Future[Unit] = Future {
-    val preparedStatement = connection.prepareStatement("" +
-      """
-      INSERT INTO weather_data (
-        coord_lon, coord_lat, weather_id, weather_main, weather_description, weather_icon, base,
-        main_temp, main_feels_like, main_temp_min, main_temp_max, main_pressure, main_humidity,
-        visibility, wind_speed, wind_deg, clouds_all, dt, sys_type, sys_id, sys_country, sys_sunrise,
-        sys_sunset, timezone, city_id, city_name, cod, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-    """)
-    preparedStatement.setString(1, city)
-    preparedStatement.setString(2, json)
-    preparedStatement.executeUpdate()
-    preparedStatement.close()
+    val createDatabaseStatement: Statement = connection.createStatement()
+    createDatabaseStatement.executeUpdate(s"CREATE DATABASE IF NOT EXISTS $databaseName;")
+    createDatabaseStatement.close()
+
+    connection.setCatalog(databaseName)
+
+    val createTableStatement: Statement = connection.createStatement()
+    createTableStatement.executeUpdate(
+      """CREATE TABLE IF NOT EXISTS weather_data (
+        |    id SERIAL PRIMARY KEY,
+        |    coord_lon FLOAT,
+        |    coord_lat FLOAT,
+        |    weather_id INT,
+        |    weather_main VARCHAR(50),
+        |    weather_description VARCHAR(255),
+        |    weather_icon VARCHAR(10),
+        |    base VARCHAR(50),
+        |    main_temp FLOAT,
+        |    main_feels_like FLOAT,
+        |    main_temp_min FLOAT,
+        |    main_temp_max FLOAT,
+        |    main_pressure INT,
+        |    main_humidity INT,
+        |    visibility INT,
+        |    wind_speed FLOAT,
+        |    wind_deg INT,
+        |    clouds_all INT,
+        |    dt BIGINT,
+        |    sys_type INT,
+        |    sys_id INT,
+        |    sys_country VARCHAR(3),
+        |    sys_sunrise BIGINT,
+        |    sys_sunset BIGINT,
+        |    timezone INT,
+        |    city_id INT,
+        |    city_name VARCHAR(100),
+        |    cod INT,
+        |    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+        |    );""".stripMargin)
+    createTableStatement.close()
+
+    connection.close()
   }
+
+//  /**
+//   * Inserts weather data into the "weather_data" table for a specific city.
+//   *
+//   * @param city  The name of the city for which the weather data is being saved.
+//   * @param json  The JSON string representing the weather data.
+//   * @return      A Future[Unit] indicating the completion of the operation.
+//   */
+//  def saveWeather(city: String, json: String): Future[Unit] = Future {
+//    val preparedStatement = getConnection.prepareStatement(
+//      """
+//      INSERT INTO weather_data (
+//        coord_lon, coord_lat, weather_id, weather_main, weather_description, weather_icon, base,
+//        main_temp, main_feels_like, main_temp_min, main_temp_max, main_pressure, main_humidity,
+//        visibility, wind_speed, wind_deg, clouds_all, dt, sys_type, sys_id, sys_country, sys_sunrise,
+//        sys_sunset, timezone, city_id, city_name, cod, created_at
+//      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+//    """)
+//    preparedStatement.setString(1, city)
+//    preparedStatement.setString(2, json)
+//    preparedStatement.executeUpdate()
+//    preparedStatement.close()
+//  }
 }
+

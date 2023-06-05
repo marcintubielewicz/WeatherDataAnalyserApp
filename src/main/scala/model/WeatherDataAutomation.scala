@@ -8,8 +8,7 @@ import scala.concurrent.{Await, ExecutionContextExecutor}
 import scala.io.Source
 
 /**
- * Main class for weather data automation.
- * It fetches weather data from OpenWeatherMap API for a list of cities and saves it to a PostgreSQL database.
+ * Class for data automation, fetches weather data from OpenWeatherMap API for a list of cities and saves it to a PostgreSQL database.
  * The process is scheduled to repeat every hour or until the application is terminated.
  */
 object WeatherDataAutomation extends App {
@@ -20,7 +19,7 @@ object WeatherDataAutomation extends App {
   // Create an ActorSystem
   implicit val system: ActorSystem = ActorSystem()
 
-  // Define the execution context
+  // Define the execution context, which is responsible for managing the execution of asynchronous tasks.
   implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
   // Schedule the execution to repeat every hour
@@ -31,14 +30,6 @@ object WeatherDataAutomation extends App {
       json.procesJsonFiles()
     }
   }
-
-//  system.scheduler.scheduleAtFixedRate(0.seconds, 1.hour) { () =>
-//    for (city <- cityNames) {
-//      OpenWeatherMapApiClient.fetchAndSaveData(city)
-//      val json = new JsonToPgSQL()
-//      json.procesJsonFiles()
-//    }
-//  }
   // Keep the application running until termination
   try {
     // Wait for the scheduler to complete
@@ -48,3 +39,5 @@ object WeatherDataAutomation extends App {
     system.terminate()
   }
 }
+
+

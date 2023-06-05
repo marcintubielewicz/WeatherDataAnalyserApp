@@ -2,6 +2,8 @@ package model
 
 /**
  * The `WeatherData` case class represents weather data for a specific location.
+ * These case class provide a structured representation of weather data,
+ * allowing to access and manipulate different aspects of the data.
  * @param coord       The coordinates of the location.
  * @param weather     The weather conditions.
  * @param base        The source of the weather data.
