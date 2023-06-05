@@ -6,7 +6,7 @@
         <entry key="WeatherDataAnalyserApp">
           <value>
             <ProjectSettingsEntry>
-              <option name="playDistrPath" value="$USER_HOME$/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/typesafe/play/play_2.13/2.8.1/play_2.13-2.8.1.jar" />
+              <option name="playDistrPath" value="$USER_HOME$/Library/Caches/Coursier/v1/https/repo1.maven.org/maven2/com/typesafe/play/play_2.13/2.8.10/play_2.13-2.8.10.jar" />
             </ProjectSettingsEntry>
           </value>
         </entry>

@@ -26,6 +26,7 @@ object OpenWeatherMapApiClient {
 
   val baseUrl = "https://api.openweathermap.org/data/2.5/weather"
   val units = "units=metric"
+  val language = "lang=en"
 
   /**
    * The fetchData method takes a cityName parameter and returns a Future containing
@@ -38,7 +39,7 @@ object OpenWeatherMapApiClient {
    */
 
   def fetchData(cityName: String): Future[String] = {
-    val url = s"$baseUrl?q=$cityName&appid=$apiKey&$units"
+    val url = s"$baseUrl?q=$cityName&appid=$apiKey&$units&$language"
     println(url)
     val request = Get(url)
     Http().singleRequest(request)
