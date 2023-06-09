@@ -36,3 +36,16 @@ CREATE TABLE IF NOT EXISTS weather_data (
     cod INT,
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
     );
+
+-- create procedure to calculate the average temperature for a given city
+CREATE OR REPLACE FUNCTION get_average_temp(city_name VARCHAR(100))
+RETURNS FLOAT AS $$
+DECLARE
+    avg_temp FLOAT;
+BEGIN
+    SELECT AVG(main_temp) INTO avg_temp FROM weather_data WHERE city_name = city_name;
+    RETURN avg_temp;
+END;
+$$ LANGUAGE plpgsql;
+
+
