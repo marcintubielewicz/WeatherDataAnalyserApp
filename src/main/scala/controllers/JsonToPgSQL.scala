@@ -22,10 +22,6 @@ class JsonToPgSQL {
     val directory = new File(directoryPath)
     val jsonFiles = directory.listFiles.filter(_.getName.endsWith(".json"))
 
-
-
-    // ...
-
     jsonFiles.foreach { file =>
       Using(scala.io.Source.fromFile(file)) { source =>
         val jsonString = source.mkString
@@ -54,7 +50,7 @@ class JsonToPgSQL {
   /**
    * Inserts the weather data into the PostgresSQL database.
    * @param data
-   *   The weather data to be inserted.
+   * The weather data to be inserted.
    */
   def insertDataToPostgres(data: WeatherData): Unit = {
     // Database connection parameters

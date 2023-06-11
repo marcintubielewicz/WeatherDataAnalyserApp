@@ -37,15 +37,70 @@ CREATE TABLE IF NOT EXISTS weather_data (
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
     );
 
--- create procedure to calculate the average temperature for a given city
-CREATE OR REPLACE FUNCTION get_average_temp(city_name VARCHAR(100))
-RETURNS FLOAT AS $$
-DECLARE
-    avg_temp FLOAT;
+-- create query to get data from weather_data table and calculate the average temperature for each country grouped by month extracted from created_at column
+SELECT
+    sys_country as country,
+    ROUND(AVG(main_temp)::numeric, 2) AS average_temperature,
+    EXTRACT(MONTH FROM created_at) AS month
+FROM
+    weather_data
+GROUP BY
+    country,
+    month
+ORDER BY
+    month ASC;
+
+-- create SQL function to get data from weather_data table and calculate the average temperature for each country grouped by month extracted from created_at column
+CREATE OR REPLACE FUNCTION averageMonthlyTempByCountry() RETURNS TABLE (
+       country TEXT,
+       avg_temp NUMERIC,
+       month INTEGER
+    ) AS $$
 BEGIN
-    SELECT AVG(main_temp) INTO avg_temp FROM weather_data WHERE city_name = city_name;
-    RETURN avg_temp;
+    RETURN QUERY
+        SELECT
+            sys_country::TEXT as country,
+            ROUND(AVG(main_temp)::numeric, 2)::NUMERIC as avg_temp,
+            EXTRACT(MONTH FROM created_at)::INTEGER as month
+        FROM
+            weather_data
+        GROUP BY
+            country,
+            month
+        ORDER BY
+            month ASC;
 END;
 $$ LANGUAGE plpgsql;
 
 
+-- create SQL function to get data from weather_data table and calculate the average, min and max temperature for each country grouped by month extracted from created_at column
+
+CREATE OR REPLACE FUNCTION averageMinMaxMonthlyTempByCountry()
+    RETURNS TABLE (
+                      country TEXT,
+                      city TEXT,
+                      average_temperature NUMERIC,
+                      min_temp NUMERIC,
+                      max_temp NUMERIC,
+                      month INTEGER
+                  )
+AS $$
+BEGIN
+    RETURN QUERY
+        SELECT
+            sys_country::text AS country,
+            city_name::text AS city,
+            ROUND(AVG(main_temp)::numeric, 2) AS average_temperature,
+            ROUND(MIN(main_temp)::numeric, 2) AS min_temp,
+            ROUND(MAX(main_temp)::numeric, 2) AS max_temp,
+            EXTRACT(MONTH FROM created_at)::int AS month
+        FROM
+            weather_data
+        GROUP BY
+            country,
+            city,
+            month
+        ORDER BY
+            month ASC;
+END;
+$$ LANGUAGE plpgsql;
