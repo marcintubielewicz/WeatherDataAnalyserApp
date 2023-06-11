@@ -3,7 +3,6 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalaVersion := "2.13.10"
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayScala)
   .settings(
     name := "WeatherDataAnalyserApp"
   )
@@ -25,18 +24,17 @@ libraryDependencies ++= Seq(
   "org.scalaj" %% "scalaj-http" % "2.4.2",
   "org.json4s" %% "json4s-jackson" % "4.0.6",
   "org.scalatest" %% "scalatest" % "3.2.15" % Test,
-  "org.slf4j" % "slf4j-api" % "2.0.5",
-  "org.slf4j" % "slf4j-nop" % "2.0.5",
   "org.postgresql" % "postgresql" % "42.5.4",
   "com.typesafe.slick" %% "slick" % "3.4.1",
   "com.typesafe.slick" %% "slick-hikaricp" % "3.4.1",
-  "com.typesafe.play" %% "play" % "2.8.18",
   "com.github.tminglei" %% "slick-pg" % "0.21.1",
   "com.github.tminglei" %% "slick-pg_play-json" % "0.21.1",
   "org.postgresql" % "postgresql" % "42.5.4", //org.postgresql.ds.PGSimpleDataSource dependency
   "io.circe" %% "circe-core" % "0.14.5",
   "io.circe" %% "circe-generic" % "0.14.5",
   "io.circe" %% "circe-parser" % "0.14.5",
-  "ch.qos.logback" % "logback-classic" % "1.2.6"
+  "ch.qos.logback" % "logback-classic" % "1.4.7",
+  "org.mockito" %% "mockito-scala" % "1.17.12" % Test,
+  "org.mockito" % "mockito-core" % "5.2.0" % Test
 )
 

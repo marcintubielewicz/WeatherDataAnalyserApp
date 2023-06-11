@@ -6,9 +6,6 @@ import akka.http.scaladsl.client.RequestBuilding.Get
 import akka.stream.Materializer
 import com.typesafe.config.ConfigFactory
 
-import java.nio.file.{Files, Paths}
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import scala.concurrent.duration.DurationInt
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
@@ -72,46 +69,6 @@ object OpenWeatherMapApiClient {
     val responseFuture = fetchData(cityName)
     responseFuture.map { json =>
       println(s"Response received for $cityName: $json")
-    }
-  }
-
-  // Set format for date and time timestamp
-  val currentDateTime: String = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm"))
-
-  /**
-   * Fetches the weather data for the specified city and saves it as a JSON file.
-   * @param cityName The name of the city for which to fetch the weather data.
-   * @return A Future[Unit] that completes when the data is successfully fetched and saved, or if an error occurs.
-   */
-  def fetchAndSaveData(cityName: String): Future[Unit] = {
-    // Fetch weather data for the specified city
-    val responseFuture: Future[String] = fetchData(cityName)
-
-    // Applies a transformation to the responseFuture using flatMap, which allows chaining of asynchronous operations.
-    responseFuture.flatMap { json =>
-      // Prepare the file path with the current date, time, and cityName
-      val filePath = s"/Users/marcintubielewicz/Documents/programming/WeatherDataAnalyserApp/src/main/resources/$currentDateTime-$cityName.json"
-
-      /**
-       * Creates a new Future called writeFileFuture that represents the asynchronous operation of writing the fetched JSON data to a file
-       * The Future is created using the Future constructor, which allows executing a block of code asynchronously.
-       */
-      val writeFileFuture = Future {
-        Files.write(Paths.get(filePath), json.getBytes)
-      }
-      // Handles the completion of the writeFileFuture Future using the map method, which allows applying a transformation to the result of a Future.
-      writeFileFuture.map { _ =>
-        // File writing completed successfully
-        println(s"Response received for $cityName. Data saved as JSON file: $filePath")
-      }.recover {
-        case exception =>
-          // An error occurred while writing the data to the file
-          println(s"An error occurred while writing data for $cityName: ${exception.getMessage}")
-      }
-    }.recover {
-      case exception =>
-        // An error occurred while fetching the weather data
-        println(s"An error occurred while fetching data for $cityName: ${exception.getMessage}")
     }
   }
 }
