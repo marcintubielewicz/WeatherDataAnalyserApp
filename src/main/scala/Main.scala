@@ -30,13 +30,11 @@ object Main{
 
     weatherData.foreach(println)
 
-    val averages = new Averages
+    val averages: Averages = new Averages
     val temperatureData = averages.readDataFromPostgres()
     averages.displayTemperatureData(temperatureData)
 
     println(averages.readDataFromPostgresCountry())
-
-
 
 
   }
